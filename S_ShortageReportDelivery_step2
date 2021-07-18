@@ -1,0 +1,52 @@
+
+Sub S_ShortageReportDelivery_step2()
+
+
+
+'填上舊交期 , 改舊交期的顏色為灰色(完成)
+For j = 1 To 20
+    For i = 20 To 31
+        Cells(5 * j - 2, i).Font.ColorIndex = 16
+    Next i
+Next j
+
+
+'填上千分位符號(完成)
+Worksheets("Delivery").Columns("T:AE").NumberFormat = "#,##0"
+
+
+
+'改新交期顏色
+
+
+For j = 1 To 20
+
+    For i = 20 To 31
+
+        If Cells(5 * j - 2, i) > Cells(5 * j - 1, i) Then
+            Cells(5 * j - 1, i).Font.Color = RGB(255, 0, 0)
+        ElseIf Cells(5 * j - 2, i) < Cells(5 * j - 1, i) Then
+            Cells(5 * j - 1, i).Font.Color = RGB(0, 0, 255)
+        Else
+            Cells(5 * j - 1, i).Font.Color = RGB(0, 0, 0)
+        End If
+
+    Next i
+
+Next j
+
+
+End Sub
+
+'
+'For j = 1 To 10
+'
+'    For i = 20 To 31
+'
+'
+'            Cells(5 * j - 1, i).Font.Color = RGB(0, 0, 0)
+'
+'    Next i
+'
+'Next j
+'End Sub

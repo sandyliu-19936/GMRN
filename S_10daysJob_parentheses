@@ -1,0 +1,60 @@
+Sub S_10daysJob_parentheses()
+''
+''
+    Sum = WorksheetFunction.Sum(Range("Y2:AS2"))
+    
+    Row_interval = 5
+    DataEndRow = Range("A1").End(xlDown).Row
+    Row = DataEndRow + Row_interval
+    col = 11
+    
+    Cells(Row, col) = "庫存"
+    Cells(Row, col + 1) = Sum
+    
+    Dim data As String
+    data = Cells(2, 49)
+    fieldArray0 = Split(data, ">>")
+    fieldArray1 = Split(fieldArray0(0), ",")
+    Length = UBound(fieldArray1)
+    
+    ' 印出09/30(63)
+    For i = 0 To Length
+        Cells(Row + 1 + i, col) = fieldArray1(i)
+    Next i
+
+    '拿掉左括號前的東西，變成09/30跟63)
+    For i = 0 To Length
+        fieldArray2 = Split(Cells(Row + 1 + i, col), "(")
+        Cells(Row + 1 + i, col) = fieldArray2(0)
+        Cells(Row + 1 + i, col + 1) = fieldArray2(1)
+    Next i
+
+    '拿掉右括號
+    For i = 0 To Length
+        fieldArray3 = Split(Cells(Row + 1 + i, col + 1), ")")
+        Cells(Row + 1 + i, col + 1) = fieldArray3(0)
+    Next i
+    
+    '加總全部有的
+    Dim amount As Integer
+    For i = 0 To Length + 1
+        amount = amount + Cells(Row + i, col + 1)
+    Next i
+ 
+    '找出缺的那天
+    For i = 0 To DataEndRow - 2
+        amount = amount + Cells(DataEndRow - i, col + 1)
+        If amount < 0 Then
+            Cells(DataEndRow - i, col + 1).Select
+            Exit For
+        End If
+    Next i
+    
+    Selection.Font.Bold = True
+    
+    '篩選掉空白格
+    ActiveSheet.Range("$A$1:$BE$500").AutoFilter Field:=12, Criteria1:="<>"
+        
+End Sub
+
+

@@ -1,0 +1,205 @@
+Sub S_shortage_list_format_step1()
+
+
+'插入前面欄位 , 新增Title(這段都是寫死的)
+    Columns("A:K").Select
+    Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
+        Cells(2, 1) = "Where-use"
+        Cells(2, 1).ColumnWidth = 14.55
+
+        Cells(2, 2) = "Status"
+        Cells(2, 2).ColumnWidth = 7.55
+
+        Cells(1, 3) = "0"
+        Cells(1, 3).NumberFormatLocal = "0.00"
+        Cells(2, 3) = "0 owner"
+        Cells(2, 3).ColumnWidth = 9.18
+
+        Cells(1, 4) = "0"
+        Cells(1, 4).NumberFormatLocal = "0.00"
+        Cells(2, 4) = "0 Critical model"
+        Cells(2, 4).ColumnWidth = 12.82
+
+        Cells(2, 5) = "Risk Level"
+        Cells(2, 5).ColumnWidth = 6
+
+        Cells(2, 6) = "Severity (13wks)"
+        Cells(2, 6).ColumnWidth = 6
+
+        Cells(2, 7) = "17日"
+        Cells(2, 8) = "10日"
+        Cells(2, 9) = "MaRS廠商"
+        Range("$A$2: $L$2").Font.ColorIndex = 2
+        Range("$A$2: $L$2").Interior.ColorIndex = 1
+        Range("$A$2: $L$2").VerticalAlignment = xlCenter
+        Cells(2, 10) = "V1"
+        Cells(2, 10).ColumnWidth = 2
+        Cells(2, 11) = "V2"
+        Cells(2, 11).ColumnWidth = 2
+
+
+
+'開始針對每一欄填資料
+DataEndRow = Range("L3").End(xlDown).Row
+    For i = 0 To DataEndRow - 3
+
+'A欄
+    Cells(3 + i, 1) = "=VLOOKUP(L" & 3 + i & ",'All Items'!A:AZ,28,0)"
+
+'B欄
+    Cells(3 + i, 2) = "=IFERROR(VLOOKUP(L" & 3 + i & ",工作表1!$B$1:$D$800,3,0),"""")"
+
+'C欄
+    Cells(3 + i, 3).Font.Color = RGB(0, 0, 204)
+    Cells(3 + i, 3).Interior.Color = RGB(217, 217, 217)
+    Cells(3 + i, 3) = "=IFERROR(VLOOKUP(D" & 3 + i & ",[做對料表_被參照.xlsx]model!$A$1:$B$200,2,0),""9.OTHERS"")"
+
+'D欄
+    Cells(3 + i, 4).Font.Color = RGB(192, 0, 0)
+    Cells(3 + i, 4).Interior.Color = RGB(255, 192, 0)
+    Cells(3 + i, 4) = "=IFERROR(LEFT(A" & 3 + i & ",FIND("","",A" & 3 + i & ")-1),A" & 3 + i & ")"
+
+'E欄
+    Cells(3 + i, 5) = "=VLOOKUP(L" & 3 + i & ",'All Items'!A:AZ,39,0)"
+'F欄
+    Cells(3 + i, 6) = "=VLOOKUP(L" & 3 + i & ",'All Items'!A:AZ,44,0)"
+    Cells(3 + i, 6).NumberFormatLocal = "0.0_);[紅色](0.0)"
+'G欄
+    Cells(3 + i, 7).Font.Color = RGB(112, 48, 160)
+    Cells(3 + i, 7).Interior.Color = RGB(255, 204, 204)
+    Cells(3 + i, 7) = "=IFERROR(VLOOKUP(L" & 3 + i & ",[做對料表_被參照.xlsx]17日!$A$1:$F$10000, 6, 0),"""")"
+'H欄
+    Cells(3 + i, 8).Interior.Color = RGB(146, 208, 80)
+    Cells(3 + i, 8) = "=IFERROR(VLOOKUP(L" & 3 + i & ",[做對料表_被參照.xlsx]廠商回覆不足!$B$1:$E$10000, 4, 0),"""")"
+'I欄
+    Cells(3 + i, 9).Interior.Color = RGB(204, 255, 102)
+'    If (3 + i) Mod 5 = 0 Then
+'        Cells(3 + i, 9) = "=IFERROR(VLOOKUP(M" & 3 + i & ",[做對料表_被參照.xlsx]MaRS廠商!$A$1:$D$32,4,0),"""")"
+'    ElseIf (3 + i) Mod 5 = 3 Then
+'        RefRow = Str(3 + i + 2)   ' RefRow = " 5"
+'        RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+'        RefRow = "=I" & RefRow    ' RefRow = "=I5"
+'        Cells(3 + i, 9) = RefRow
+'    ElseIf (3 + i) Mod 5 = 4 Then
+'        RefRow = Str(3 + i + 1)   ' RefRow = " 5"
+'        RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+'        RefRow = "=I" & RefRow    ' RefRow = "=I5"
+'        Cells(3 + i, 9) = RefRow
+'    ElseIf (3 + i) Mod 5 = 1 Then
+'        RefRow = Str(3 + i - 1)  ' RefRow = " 5"
+'        RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+'        RefRow = "=I" & RefRow    ' RefRow = "=I5"
+'        Cells(3 + i, 9) = RefRow
+'    ElseIf (3 + i) Mod 5 = 2 Then
+'        RefRow = Str(3 + i - 2)   ' RefRow = " 5"
+'        RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+'        RefRow = "=I" & RefRow    ' RefRow = "=I5"
+'        Cells(3 + i, 9) = RefRow
+'    End If
+    If (3 + i) Mod 5 = 0 Then
+        Cells(3 + i, 9) = "=IFERROR(VLOOKUP(M" & 3 + i & ",[做對料表_被參照.xlsx]MaRS廠商!$A$1:$D$32,4,0),"""")"
+    Else
+        If (3 + i) Mod 5 = 3 Then
+            RefRow = Str(3 + i + 2)   ' RefRow = " 5"
+            RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+            RefRow = "=I" & RefRow    ' RefRow = "=I5"
+        ElseIf (3 + i) Mod 5 = 4 Then
+            RefRow = Str(3 + i + 1)   ' RefRow = " 5"
+            RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+            RefRow = "=I" & RefRow    ' RefRow = "=I5"
+        ElseIf (3 + i) Mod 5 = 1 Then
+            RefRow = Str(3 + i - 1)  ' RefRow = " 5"
+            RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+            RefRow = "=I" & RefRow    ' RefRow = "=I5"
+        ElseIf (3 + i) Mod 5 = 2 Then
+            RefRow = Str(3 + i - 2)   ' RefRow = " 5"
+            RefRow = Mid(RefRow, 2)   ' RefRow = "5"
+            RefRow = "=I" & RefRow    ' RefRow = "=I5"
+        End If
+        Cells(3 + i, 9) = RefRow
+    End If
+    
+'J欄
+    Cells(3 + i, 10).Interior.Color = RGB(204, 255, 153)
+    Cells(3 + i, 10) = "=IFERROR(VLOOKUP(L" & 3 + i & ",工作表1!$I$1:$J$100,2,0),"""")"
+'K欄
+    Cells(3 + i, 11).Interior.Color = RGB(239, 255, 189)
+
+Next i
+
+'B欄調顏色
+    For i = 0 To DataEndRow - 3
+        If Cells(3 + i, 2) = "Watch out" Then
+        Cells(3 + i, 2).Font.Color = RGB(0, 0, 0)
+        Else
+        Cells(3 + i, 2).Font.Color = RGB(255, 0, 0)
+        End If
+    Next i
+
+'篩選排序
+    Rows(2).Select
+    Selection.AutoFilter
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:=Array("1.DIVING", "2.DOG", "3.GOLF", "4.HANDHELD", "5.SENSOR", "6.SHOOTING SPORTS", "7.WEARABLE", "8.ACC", "9.OTHERS"), Operator:=xlFilterValues
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$C$2:$C$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:="1.DIVING"
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$D$2:$D$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:="2.DOG"
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$D$2:$D$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:="3.GOLF"
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$D$2:$D$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:="4.HANDHELD"
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$D$2:$D$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:="5.SENSOR"
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$D$2:$D$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:="6.SHOOTING SPORTS"
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$D$2:$D$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3, Criteria1:="7.WEARABLE"
+    Range("A2").CurrentRegion.Select
+    Selection.Sort Key1:=Range("$D$2:$D$20000"), Order1:=1, Header:=x1yes
+
+    ActiveSheet.Range("$A$2:$BZ$20000").AutoFilter Field:=3
+
+
+'還原
+        Cells(1, 3) = ""
+        Cells(2, 3) = "owner"
+        Cells(1, 4) = ""
+        Cells(2, 4) = "Critical model"
+
+'日期
+        Cells(1, 12) = "=TODAY()"
+        Cells(1, 12).NumberFormatLocal = "m/d;@"
+        Cells(1, 12).Font.Color = RGB(255, 0, 0)
+        Cells(1, 12).Font.Bold = True
+        Cells(1, 16) = "=L1-WEEKDAY(L1,2)+1"
+        Cells(1, 16).NumberFormatLocal = "m/d;@"
+        For j = 1 To 52
+        Cells(1, 16 + j) = Cells(1, 16) + 7 * j
+        Cells(1, 16 + j).NumberFormatLocal = "m/d;@"
+        Next j
+
+
+MsgBox "Done"
+
+End Sub
+
+Function GetColStr(number As Variant) As String
+
+    Arr = Array("", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+    GetColStr = Arr(number)
+
+End Function
